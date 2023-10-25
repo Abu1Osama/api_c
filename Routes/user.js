@@ -4,7 +4,7 @@ const User = require('../Models/user.model');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const fs=require("fs")
-const { OAuth2Client } = require('google-auth-library');
+// const { OAuth2Client } = require('google-auth-library');
 
 require("dotenv").config();
 
@@ -59,31 +59,31 @@ router.post("/register", async (req, res) => {
     }
   });
 
-router.post( "/google",async (req, res) => {
-    const { tokenId } = req.body;
-    const client = new OAuth2Client('17936703355-2irj2ekhhi3lagomvp5i13bfvuc8gi1t.apps.googleusercontent.com'); // Replace with your actual client ID
+// router.post( "/google",async (req, res) => {
+//     const { tokenId } = req.body;
+//     const client = new OAuth2Client('17936703355-2irj2ekhhi3lagomvp5i13bfvuc8gi1t.apps.googleusercontent.com'); // Replace with your actual client ID
   
-    try {
-      const response = await client.verifyIdToken({
-        idToken: tokenId,
-        audience: '17936703355-2irj2ekhhi3lagomvp5i13bfvuc8gi1t.apps.googleusercontent.com', 
-      });
-      const payload = response.getPayload();
-      const email = payload.email;
-      const user = await User.findOne({ email });
+//     try {
+//       const response = await client.verifyIdToken({
+//         idToken: tokenId,
+//         audience: '17936703355-2irj2ekhhi3lagomvp5i13bfvuc8gi1t.apps.googleusercontent.com', 
+//       });
+//       const payload = response.getPayload();
+//       const email = payload.email;
+//       const user = await User.findOne({ email });
   
-      if (!user) {
-        const newUser = new User({ email, googleId: payload.sub });
-        await newUser.save();
-      }
+//       if (!user) {
+//         const newUser = new User({ email, googleId: payload.sub });
+//         await newUser.save();
+//       }
   
-      const token = jwt.sign({ email }, process.env.secret_code, { expiresIn: '1h' });
-      res.send({ token });
-    } catch (error) {
-      console.log(error)
-      res.status(401).send('Google authentication failed');
-    }
-  });
+//       const token = jwt.sign({ email }, process.env.secret_code, { expiresIn: '1h' });
+//       res.send({ token });
+//     } catch (error) {
+//       console.log(error)
+//       res.status(401).send('Google authentication failed');
+//     }
+//   });
 
 
 //   router.get("/logout", (req, res) => {
